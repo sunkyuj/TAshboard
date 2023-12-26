@@ -10,6 +10,6 @@ import java.util.List;
 public class HelloController {
     @GetMapping("/hello")
     public List<String> getHello() {
-        return Arrays.asList("안녕하세요", "Hello");
+        return Arrays.asList("안녕하세요", "Hello","asdfasdf");
     }
 }
