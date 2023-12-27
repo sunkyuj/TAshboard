@@ -7,7 +7,7 @@ import project.tashboard.domain.post.Post;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
 
