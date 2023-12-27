@@ -1,14 +1,10 @@
 package project.tashboard.web.post;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.tashboard.domain.post.Post;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/post")
@@ -18,32 +14,31 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostDTO> getPosts() {
-
+    public List<PostResponse> getPosts() {
         return postService.findPosts()
                 .stream()
-                .map(post -> PostDTO.builder()
-                        .title(post.getTitle())
-                        .content(post.getContent())
-                        .member(post.getMember())
-                        .comments(post.getComments())
-                        .build()
-                )
+                .map(PostResponse::build)
                 .toList();
     }
 
     @GetMapping("/{postId}")
-    public PostDTO getPost(@PathVariable Long postId) {
+    public PostResponse getPost(@PathVariable Long postId) {
         Post post = postService.findPost(postId).orElse(null);
-        if (post == null) {
+        if (post == null) { // Not Found, TODO: 예외 처리
             return null;
         }
-        return PostDTO.builder()
-                .title(post.getTitle())
-                .content(post.getContent())
-                .member(post.getMember())
-                .comments(post.getComments())
+        return PostResponse.build(post);
+    }
+
+    @PostMapping
+    public PostResponse addPost(@RequestBody PostRequest postRequest) {
+        Post post = Post.builder()
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
+//                .member(postRequest.getMember())
                 .build();
+        Post newPost = postService.addPost(post);
+        return PostResponse.build(newPost);
     }
 
 

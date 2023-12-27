@@ -22,4 +22,9 @@ public class PostService {
     public Optional<Post> findPost(Long postId) {
         return postRepository.findById(postId);
     }
+
+    public Post addPost(Post post) {
+        // TODO: member 정보 추가
+        return postRepository.save(post);
+    }
 }

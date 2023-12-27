@@ -8,7 +8,7 @@ import project.tashboard.web.post.PostRepository;
 
 @Component
 @RequiredArgsConstructor
-public class SamplePostInit {
+public class SampleDataInit {
     private final PostRepository postRepository;
 
     // 테스트용 데이터 추가
