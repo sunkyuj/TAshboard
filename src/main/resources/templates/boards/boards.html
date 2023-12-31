@@ -8,7 +8,7 @@
 <body>
 
 <!-- 네비게이션 바 -->
-<nav th:replace="~{navbar :: navbarFragment}"></nav>
+<nav th:replace="~{layout/navbar :: navbarFragment}"></nav>
 
 <div class="container" style="max-width: 1000px">
 
@@ -38,7 +38,7 @@
                         <h5 class="card-title" th:text="${board.name}"></h5>
                         <p class="card-text" th:text="${board.description}"></p>
                         <!-- 각 게시판으로 이동하는 링크 -->
-                        <a th:href="@{'/posts/' + ${board.boardId}}" class="btn btn-primary">이 게시판으로 이동</a>
+                        <a th:href="@{'/posts/' + ${board.url}}" class="btn btn-primary">이 게시판으로 이동</a>
                     </div>
                 </div>
             </div>

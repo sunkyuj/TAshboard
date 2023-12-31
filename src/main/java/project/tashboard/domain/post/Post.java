@@ -1,14 +1,11 @@
 package project.tashboard.domain.post;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import project.tashboard.domain.board.Board;
+import project.tashboard.domain.board.BoardType;
 import project.tashboard.domain.comment.Comment;
 import project.tashboard.domain.member.Member;
 
@@ -21,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class) // JPA Auditing
+@ToString(exclude = "member")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +27,8 @@ public class Post {
     private String title;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")  // FK, 연관관계의 주인
-    private Board board;
+    @Enumerated(EnumType.STRING) // Enum 값을 DB에 String으로 저장
+    private BoardType boardType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")  // FK, 연관관계의 주인
