@@ -1,21 +1,15 @@
 package project.tashboard.domain.board;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import project.tashboard.domain.post.Post;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
-import java.util.List;
-
-@Entity
-@Data
+@AllArgsConstructor
+@ToString
+@Getter
 public class Board {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
-    private Long boardId;
+    private BoardType boardType;
     private String name;
     private String description;
-
-    @OneToMany(mappedBy = "board")
-    private List<Post> posts;
+    private String url; // {"ta", "school"}
 }
