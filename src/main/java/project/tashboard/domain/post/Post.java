@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import project.tashboard.domain.board.Board;
 import project.tashboard.domain.comment.Comment;
 import project.tashboard.domain.member.Member;
 
@@ -27,6 +28,10 @@ public class Post {
     private Long postId;
     private String title;
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")  // FK, 연관관계의 주인
+    private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")  // FK, 연관관계의 주인
