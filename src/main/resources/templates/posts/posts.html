@@ -7,9 +7,12 @@
 </head>
 <body>
 
+<!-- 네비게이션 바 -->
+<nav th:replace="~{layout/navbar :: navbarFragment}"></nav>
+
 <div class="container" style="max-width: 1000px" th:fragment="board">
     <div class="py-5 text-center">
-        <h2 th:text="#{page.posts}">글 목록</h2>
+        <h2 th:text="${board.name}">글 목록</h2>
     </div>
 
     <div class="row">
@@ -28,17 +31,17 @@
             <tr>
                 <th th:text="#{label.post.id}">ID</th>
                 <th th:text="#{label.post.title}">제목</th>
-<!--                <th th:text="#{label.post.name}">작성자</th>-->
+                <th th:text="#{label.post.name}">작성자</th>
                 <th th:text="#{label.post.createdAt}">등록일</th>
 
             </tr>
             </thead>
             <tbody>
             <tr th:each="post : ${posts}">
-                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.postId}">글 ID</a></td>
-                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.title}">제목</a></td>
-<!--                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.member.name}">작성자</a></td>-->
-                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.createdAt}">제목</a></td>
+                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.postId}">글 ID</a></td>
+                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.title}">제목</a></td>
+                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.member.name}">작성자</a></td>
+                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.createdAt}">제목</a></td>
             </tr>
             </tbody>
         </table>

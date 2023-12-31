@@ -1,36 +1,25 @@
 package project.tashboard;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import project.tashboard.domain.board.Board;
-import project.tashboard.domain.board.BoardRepository;
+import project.tashboard.domain.board.BoardType;
 import project.tashboard.domain.member.Member;
 import project.tashboard.domain.post.Post;
 import project.tashboard.web.member.MemberRepository;
 import project.tashboard.web.post.PostRepository;
 
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class SampleDataInit {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
 
     // 테스트용 데이터 추가
     @PostConstruct
     public void init() {
-
-        Board board1 = new Board();
-        board1.setName("교생 게시판");
-        board1.setDescription("교생 게시판입니다.");
-        boardRepository.save(board1);
-
-        Board board2 = new Board();
-        board2.setName("학교 게시판");
-        board2.setDescription("학교 게시판입니다.");
-        boardRepository.save(board2);
-
 
         Member member1 = new Member();
         member1.setLoginId("test1");
@@ -48,14 +37,22 @@ public class SampleDataInit {
         post1.setTitle("테스트용 제목1");
         post1.setContent("테스트용 내용1");
         post1.setMember(member1);
-        post1.setBoard(board1);
+        post1.setBoardType(BoardType.TA);
         postRepository.save(post1);
 
         Post post2 = new Post();
         post2.setTitle("테스트용 제목2");
         post2.setContent("테스트용 내용2");
-        post1.setMember(member2);
-        post1.setBoard(board1);
+        post2.setMember(member2);
+        post2.setBoardType(BoardType.TA);
         postRepository.save(post2);
+
+        Post post3 = new Post();
+        post3.setTitle("테스트용 제목3");
+        post3.setContent("테스트용 내용3");
+        post3.setMember(member1);
+        post3.setBoardType(BoardType.SCHOOL);
+        postRepository.save(post3);
+
     }
 }

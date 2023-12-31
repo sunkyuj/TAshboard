@@ -1,30 +1,23 @@
 package project.tashboard;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
-import java.util.List;
+import static project.tashboard.domain.board.BoardLists.boards;
 
 @Controller
+@RequestMapping("/")
+@RequiredArgsConstructor
+@Slf4j
 public class HomeController {
 
-    @GetMapping("/")
-    public String home() {
-        return "redirect:/boards";
-    }
-    @GetMapping("/board")
-    public String board() {
-        return "board";
-    }
-
-    @GetMapping("/layout")
-    public String layout() {
-        return "layout";
-    }
-
-    @GetMapping("/hello")
-    public List<String> getHello() {
-        return Arrays.asList("안녕하세요", "Hello","asdfasdf");
+    @GetMapping
+    public String home(Model model) {
+        model.addAttribute("boards", boards);
+        return "boards/boards";
     }
 }
