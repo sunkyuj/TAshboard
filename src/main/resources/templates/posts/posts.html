@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 1000px" th:fragment="board">
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.posts}">글 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='addForm.html'"
+                    th:onclick="|location.href='@{/posts/add}'|"
+                    type="button" th:text="#{page.addPost}">글 등록</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{label.post.id}">ID</th>
+                <th th:text="#{label.post.title}">제목</th>
+<!--                <th th:text="#{label.post.name}">작성자</th>-->
+                <th th:text="#{label.post.createdAt}">등록일</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.postId}">글 ID</a></td>
+                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.title}">제목</a></td>
+<!--                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.member.name}">작성자</a></td>-->
+                <td><a href="item.html" th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.createdAt}">제목</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>
