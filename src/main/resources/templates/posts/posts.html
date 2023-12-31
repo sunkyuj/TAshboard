@@ -19,7 +19,7 @@
         <div class="col">
             <button class="btn btn-primary float-end"
                     onclick="location.href='addForm.html'"
-                    th:onclick="|location.href='@{/posts/add}'|"
+                    th:onclick="|location.href='@{/posts/{board}/add(board=${board.url})}'|"
                     type="button" th:text="#{page.addPost}">글 등록</button>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <tr>
                 <th th:text="#{label.post.id}">ID</th>
                 <th th:text="#{label.post.title}">제목</th>
-                <th th:text="#{label.post.name}">작성자</th>
+                <th th:text="#{label.post.writer}">작성자</th>
                 <th th:text="#{label.post.createdAt}">등록일</th>
 
             </tr>
@@ -40,8 +40,8 @@
             <tr th:each="post : ${posts}">
                 <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.postId}">글 ID</a></td>
                 <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.title}">제목</a></td>
-                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.member.name}">작성자</a></td>
-                <td><a href="item.html" th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.createdAt}">제목</a></td>
+                <td><a href="item.html" th:href="@{/members/{memberId}(memberId=${post.member.memberId})}" th:text="${post.member.name}">작성자</a></td>
+                <td th:href="@{/posts/{board}/{postId}(board=${board.url}, postId=${post.postId})}" th:text="${post.createdAt}">작성일</td>
             </tr>
             </tbody>
         </table>

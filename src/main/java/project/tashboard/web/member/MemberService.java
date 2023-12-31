@@ -31,4 +31,8 @@ public class MemberService {
     public void register(Member member) {
         memberRepository.save(member);
     }
+
+    public Member findByName(String writerName) {
+        return memberRepository.findByName(writerName);
+    }
 }

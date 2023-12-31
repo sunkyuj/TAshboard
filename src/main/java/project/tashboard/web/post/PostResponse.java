@@ -3,7 +3,6 @@ package project.tashboard.web.post;
 import lombok.Builder;
 import lombok.Data;
 import project.tashboard.domain.comment.Comment;
-import project.tashboard.domain.member.Member;
 import project.tashboard.domain.post.Post;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,7 @@ public class PostResponse {
         return PostResponse.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
-                .content(post.getContent())
+                .content(post.getContents())
                 .memberId(post.getMember().getMemberId())
                 .memberName(post.getMember().getName())
                 .comments(post.getComments())

@@ -25,7 +25,7 @@ public class Post {
     @Column(name = "post_id")
     private Long postId;
     private String title;
-    private String content;
+    private String contents;
 
     @Enumerated(EnumType.STRING) // Enum 값을 DB에 String으로 저장
     private BoardType boardType;

@@ -35,21 +35,21 @@ public class SampleDataInit {
 
         Post post1 = new Post();
         post1.setTitle("테스트용 제목1");
-        post1.setContent("테스트용 내용1");
+        post1.setContents("테스트용 내용1");
         post1.setMember(member1);
         post1.setBoardType(BoardType.TA);
         postRepository.save(post1);
 
         Post post2 = new Post();
         post2.setTitle("테스트용 제목2");
-        post2.setContent("테스트용 내용2");
+        post2.setContents("테스트용 내용2");
         post2.setMember(member2);
         post2.setBoardType(BoardType.TA);
         postRepository.save(post2);
 
         Post post3 = new Post();
         post3.setTitle("테스트용 제목3");
-        post3.setContent("테스트용 내용3");
+        post3.setContents("테스트용 내용3");
         post3.setMember(member1);
         post3.setBoardType(BoardType.SCHOOL);
         postRepository.save(post3);
