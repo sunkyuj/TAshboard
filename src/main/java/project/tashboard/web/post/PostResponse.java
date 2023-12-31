@@ -15,7 +15,8 @@ public class PostResponse {
     private Long postId;
     private String title;
     private String content;
-    private Member member;
+    private Long memberId;
+    private String memberName;
     private List<Comment> comments;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -25,7 +26,8 @@ public class PostResponse {
                 .postId(post.getPostId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .member(post.getMember())
+                .memberId(post.getMember().getMemberId())
+                .memberName(post.getMember().getName())
                 .comments(post.getComments())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
