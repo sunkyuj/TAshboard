@@ -48,11 +48,14 @@
             </div>
         </div>
 
-        <!--   TODO: 게시판 종류는 드롭박스 형태로 변경     -->
         <div>
             <label for="boardType" th:text="#{label.board.type}">게시판 종류</label>
-            <input type="text" id="boardType" th:field="*{boardType}"
-                   th:errorclass="field-error" class="form-control" placeholder="게시판을 입력하세요">
+            <select id="boardType" th:field="*{boardType}"
+                   th:errorclass="field-error" class="form-select">
+                <option value="">==게시판 선택==</option>
+                <option th:each="board : ${boardList}" th:value="${board.boardType}"
+                        th:text="${board.name}">FAST</option>
+            </select>
             <div class="field-error" th:errors="*{boardType}">
                 게시판 오류
             </div>
@@ -63,7 +66,7 @@
             <input type="text" id="writerName" th:field="*{writerName}"
                    th:errorclass="field-error" class="form-control" placeholder="작성자를 입력하세요">
             <div class="field-error" th:errors="*{writerName}">
-                작성 오류
+                작성자 오류
             </div>
         </div>
 
@@ -76,7 +79,7 @@
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/posts/add}'|"
+                        th:onclick="|location.href='@{/posts/{boardPath}(boardPath=${boardPath})}'|"
                         type="button" th:text="#{button.cancel}">취소</button>
             </div>
         </div>
