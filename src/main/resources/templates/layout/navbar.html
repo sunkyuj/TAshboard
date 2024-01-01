@@ -12,8 +12,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="/posts/school" th:text="#{label.board.school}">게시판2</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">로그인</a>
+            <li class="nav-item" th:if="${session.loginMember == null}">
+                <a class="nav-link" th:href="@{/login}">로그인</a>
+            </li>
+            <li class="nav-item" th:if="${session.loginMember == null}">
+                <a class="nav-link" th:href="@{/register}">회원가입</a>
+            </li>
+            <li class="nav-item" th:if="${session.loginMember != null}">
+                <a class="nav-link" th:href="@{/mypage}">마이페이지</a>
+            </li>
+            <li class="nav-item" th:if="${session.loginMember != null}">
+                <a class="nav-link" th:href="@{/logout}">로그아웃</a>
             </li>
         </ul>
     </div>
