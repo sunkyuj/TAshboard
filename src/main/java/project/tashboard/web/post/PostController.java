@@ -16,7 +16,7 @@ import project.tashboard.web.member.MemberService;
 
 import java.util.List;
 
-import static project.tashboard.domain.board.BoardLists.boards;
+import static project.tashboard.domain.board.BoardLists.boardList;
 
 @Controller
 @RequestMapping("/posts")
@@ -38,7 +38,7 @@ public class PostController {
     public String getBoardPosts(@PathVariable String boardPath, Model model) {
         BoardType boardType = getBoardType(boardPath);
         List<Post> posts = postService.findBoardPosts(boardType);
-        model.addAttribute("board", boards.get(boardType.ordinal()));
+        model.addAttribute("board", boardList.get(boardType.ordinal()));
         model.addAttribute("posts", posts);
         return "posts/posts";
     }
@@ -68,14 +68,20 @@ public class PostController {
 
 
     @GetMapping("/{boardPath}/add")
-    public String addForm(Model model) {
+    public String addForm(@PathVariable String boardPath, Model model) {
         model.addAttribute("post", new PostAddForm());
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("boardPath", boardPath);
         return "posts/addForm";
     }
 
 
     @PostMapping("/{boardPath}/add")
-    public String addPost(@PathVariable String boardPath, @Validated @ModelAttribute("post") PostAddForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addPost(@PathVariable String boardPath,
+                          @Validated @ModelAttribute("post") PostAddForm form,
+                          BindingResult bindingResult,
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
 
         //특정 필드 예외가 아닌 전체 예외
 //        if (form.getPrice() != null && form.getQuantity() != null) {
@@ -87,11 +93,13 @@ public class PostController {
 
         Member member = memberService.findByName(form.getWriterName());
         if(member == null) {
-            bindingResult.reject("memberNotFound", new Object[]{form.getWriterName()}, null);
+            bindingResult.reject("memberNotFound", "작성자가 존재하지 않습니다.");
         }
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("boardPath", boardPath);
             return "posts/addForm";
         }
 
