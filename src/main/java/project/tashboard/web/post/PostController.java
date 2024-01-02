@@ -29,11 +29,6 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
 
-    @GetMapping()
-    @ResponseBody
-    public List<Post> getPosts() {
-        return postService.findPosts();
-    }
 
     // 특정 board_id를 갖는 post들을 조회하여 화면에 표시
     @GetMapping("/{boardPath}")
@@ -45,16 +40,6 @@ public class PostController {
         return "posts/posts";
     }
 
-
-    @GetMapping("/{boardPath}/{postId}")
-    @ResponseBody
-    public PostResponse getPost(@PathVariable Long postId) {
-        Post post = postService.findPost(postId).orElse(null);
-        if (post == null) { // Not Found, TODO: 예외 처리
-            return null;
-        }
-        return PostResponse.build(post);
-    }
 
 
     @PostMapping("/{boardPath}")
