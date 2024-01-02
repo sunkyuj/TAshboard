@@ -1,4 +1,4 @@
-package project.tashboard.web.post;
+package project.tashboard.api.post;
 
 import lombok.Builder;
 import lombok.Data;

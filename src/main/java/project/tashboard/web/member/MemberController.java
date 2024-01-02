@@ -11,7 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import project.tashboard.api.member.LoginRequest;
+import project.tashboard.api.member.MemberResponse;
+import project.tashboard.api.member.RegisterRequest;
 import project.tashboard.domain.member.Member;
+import project.tashboard.domain.member.form.MemberLoginForm;
+import project.tashboard.domain.member.form.MemberRegisterForm;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,12 +31,28 @@ public class MemberController {
 
     @GetMapping("/members")
     @ResponseBody
-    public List<Member> getMembers() {
-        return memberService.findAll();
+    public List<MemberResponse> getMembers() {
+        return memberService.findAll().stream().map(MemberResponse::build).toList();
+    }
+
+    @GetMapping("/register")
+    public String registerForm(@ModelAttribute("member") MemberRegisterForm form) {
+        return "members/registerForm";
     }
 
     @PostMapping("/register")
-    public void register(@Validated @RequestBody RegisterRequest registerRequest, BindingResult bindingResult, HttpServletResponse response) throws IOException {
+    public void register(@Validated @ModelAttribute MemberRegisterForm form, BindingResult bindingResult, HttpServletResponse response) throws IOException {
+        if (bindingResult.hasErrors()) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            response.sendRedirect("/register");
+        }
+        memberService.register(form.toMember());
+        response.sendRedirect("/");
+    }
+
+
+//    @PostMapping("/register")
+    public void apiRegister(@Validated @RequestBody RegisterRequest registerRequest, BindingResult bindingResult, HttpServletResponse response) throws IOException {
         if (bindingResult.hasErrors()) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             response.sendRedirect("/register");
@@ -42,14 +63,14 @@ public class MemberController {
 
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
+    public String loginForm(@ModelAttribute("loginForm") MemberLoginForm form) {
         return "members/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult,
-                          @RequestParam(defaultValue = "/") String redirectURL,
-                          HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute MemberLoginForm form, BindingResult bindingResult,
+                        @RequestParam(defaultValue = "/") String redirectURL,
+                        HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "members/loginForm";
         }
@@ -70,9 +91,9 @@ public class MemberController {
 
 //    @PostMapping("/login")
     public void apiLogin(@Validated @RequestBody LoginRequest loginRequest, BindingResult bindingResult,
-                          @RequestParam(defaultValue = "/") String redirectURL,
-                          HttpServletRequest request,
-                          HttpServletResponse response) throws IOException {
+                         @RequestParam(defaultValue = "/") String redirectURL,
+                         HttpServletRequest request,
+                         HttpServletResponse response) throws IOException {
         if (bindingResult.hasErrors()) {
             response.sendRedirect(request.getContextPath());
         }

@@ -1,4 +1,4 @@
-package project.tashboard.web.member;
+package project.tashboard.api.member;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;

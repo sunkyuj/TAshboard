@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.tashboard.api.post.PostRequest;
+import project.tashboard.api.post.PostResponse;
 import project.tashboard.domain.board.BoardType;
 import project.tashboard.domain.member.Member;
 import project.tashboard.domain.post.Post;
