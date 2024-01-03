@@ -12,6 +12,7 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+
     </style>
 </head>
 <body>
@@ -40,15 +41,6 @@
             </div>
         </div>
         <div>
-            <label for="contents" th:text="#{label.post.contents}">내용</label>
-            <input type="text" id="contents" th:field="*{contents}"
-                   th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요">
-            <div class="field-error" th:errors="*{contents}">
-                내용 오류
-            </div>
-        </div>
-
-        <div>
             <label for="boardType" th:text="#{label.board.type}">게시판 종류</label>
             <select id="boardType" th:field="*{boardType}"
                    th:errorclass="field-error" class="form-select">
@@ -67,6 +59,15 @@
                    th:errorclass="field-error" class="form-control" placeholder="작성자를 입력하세요">
             <div class="field-error" th:errors="*{writerName}">
                 작성자 오류
+            </div>
+        </div>
+        <div>
+            <label for="contents" th:text="#{label.post.contents}">내용</label>
+            <textarea type="text" id="contents" th:field="*{contents}" th:rows="5"
+                      th:errorclass="field-error" class="form-control h-75" placeholder="내용을 입력하세요">
+            </textarea>
+            <div class="field-error" th:errors="*{contents}">
+                내용 오류
             </div>
         </div>
 
