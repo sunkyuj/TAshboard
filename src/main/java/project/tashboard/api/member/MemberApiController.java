@@ -64,5 +64,13 @@ public class MemberApiController {
 
         response.sendRedirect(redirectURL);
     }
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false); // 세션을 조회해서 있으면 반환, 없으면 null 반환
+        if (session != null) {
+            session.invalidate(); // 세션 만료
+        }
+        response.sendRedirect("/");
+    }
 
 }
