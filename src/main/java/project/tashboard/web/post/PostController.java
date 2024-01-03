@@ -21,7 +21,7 @@ import java.util.List;
 import static project.tashboard.domain.board.BoardLists.boardList;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/posts/{boardPath}")
 @RequiredArgsConstructor
 @Slf4j
 public class PostController {
@@ -31,7 +31,7 @@ public class PostController {
 
 
     // 특정 board_id를 갖는 post들을 조회하여 화면에 표시
-    @GetMapping("/{boardPath}")
+    @GetMapping()
     public String getBoardPosts(@PathVariable String boardPath, Model model) {
         BoardType boardType = getBoardType(boardPath);
         List<Post> posts = postService.findBoardPosts(boardType);
@@ -42,7 +42,7 @@ public class PostController {
 
 
 
-    @PostMapping("/{boardPath}")
+    @PostMapping()
     public PostResponse addPost(@PathVariable String boardPath, @RequestBody PostRequest postRequest) {
         Post post = Post.builder()
                 .title(postRequest.getTitle())
@@ -54,7 +54,7 @@ public class PostController {
     }
 
 
-    @GetMapping("/{boardPath}/add")
+    @GetMapping("/add")
     public String addForm(@PathVariable String boardPath, Model model) {
         model.addAttribute("post", new PostAddForm());
         model.addAttribute("boardList", boardList);
@@ -63,7 +63,7 @@ public class PostController {
     }
 
 
-    @PostMapping("/{boardPath}/add")
+    @PostMapping("/add")
     public String addPost(@PathVariable String boardPath,
                           @Validated @ModelAttribute("post") PostAddForm form,
                           BindingResult bindingResult,
@@ -104,6 +104,14 @@ public class PostController {
         redirectAttributes.addAttribute("postId", savedPost.getPostId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/posts/{boardPath}/{postId}";
+    }
+
+    @GetMapping("/{postId}")
+    public String getPost(@PathVariable String boardPath, @PathVariable Long postId, Model model) {
+        Post post = postService.findPost(postId).orElseThrow();
+        model.addAttribute("post", post);
+        model.addAttribute("boardPath", boardPath);
+        return "posts/post";
     }
 
     private static BoardType getBoardType(String boardPath) {

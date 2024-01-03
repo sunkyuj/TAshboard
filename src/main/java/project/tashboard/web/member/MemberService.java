@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import project.tashboard.domain.member.Member;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,7 +33,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public Member findByName(String writerName) {
-        return memberRepository.findByName(writerName);
+    public Member findByName(String name) {
+        return memberRepository.findByName(name);
     }
 }
