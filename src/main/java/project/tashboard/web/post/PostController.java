@@ -1,5 +1,7 @@
 package project.tashboard.web.post;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.tashboard.api.post.PostRequest;
 import project.tashboard.api.post.PostResponse;
+import project.tashboard.domain.board.Board;
 import project.tashboard.domain.board.BoardType;
 import project.tashboard.domain.member.Member;
 import project.tashboard.domain.post.Post;
 import project.tashboard.domain.post.form.PostAddForm;
 import project.tashboard.web.member.MemberService;
+import project.tashboard.web.member.SessionConst;
 
 import java.util.List;
 
@@ -35,30 +39,17 @@ public class PostController {
     public String getBoardPosts(@PathVariable String boardPath, Model model) {
         BoardType boardType = getBoardType(boardPath);
         List<Post> posts = postService.findBoardPosts(boardType);
-        model.addAttribute("board", boardList.get(boardType.ordinal()));
+        model.addAttribute("board", getBoard(boardPath));
         model.addAttribute("posts", posts);
         return "posts/posts";
     }
 
-
-
-    @PostMapping()
-    public PostResponse addPost(@PathVariable String boardPath, @RequestBody PostRequest postRequest) {
-        Post post = Post.builder()
-                .title(postRequest.getTitle())
-                .contents(postRequest.getContent())
-//                .member(postRequest.getMember())
-                .build();
-        Post newPost = postService.addPost(post);
-        return PostResponse.build(newPost);
-    }
-
-
     @GetMapping("/add")
-    public String addForm(@PathVariable String boardPath, Model model) {
-        model.addAttribute("post", new PostAddForm());
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("boardPath", boardPath);
+    public String addForm(@PathVariable String boardPath, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        model.addAttribute("post", new PostAddForm(loginMember));
+        model.addAttribute("board", getBoard(boardPath));
         return "posts/addForm";
     }
 
@@ -69,6 +60,7 @@ public class PostController {
                           BindingResult bindingResult,
                           Model model,
                           RedirectAttributes redirectAttributes) {
+        log.info("form={}", form);
 
         //특정 필드 예외가 아닌 전체 예외
 //        if (form.getPrice() != null && form.getQuantity() != null) {
@@ -77,7 +69,6 @@ public class PostController {
 //                bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
 //            }
 //        }
-
         Member member = memberService.findByName(form.getWriterName());
         if(member == null) {
             bindingResult.reject("memberNotFound", "작성자가 존재하지 않습니다.");
@@ -116,6 +107,9 @@ public class PostController {
 
     private static BoardType getBoardType(String boardPath) {
         return BoardType.valueOf(boardPath.toUpperCase());
+    }
+    private static Board getBoard(String boardPath) {
+        return boardList.get(getBoardType(boardPath).ordinal());
     }
 
 }

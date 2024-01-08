@@ -10,4 +10,11 @@ public enum BoardType {
             default -> "";
         };
     }
+    public String getBoardName() {
+        return switch (this) {
+            case TA -> "교생 게시판";
+            case SCHOOL -> "학교 게시판";
+            default -> "";
+        };
+    }
 }

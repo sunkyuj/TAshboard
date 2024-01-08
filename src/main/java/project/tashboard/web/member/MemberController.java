@@ -67,7 +67,7 @@ public class MemberController {
         // 로그인 성공 처리
         HttpSession session = request.getSession(); // 세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember); // 세션에 로그인 회원 정보 보관
-
+        log.info("POST /login loginMember={}", loginMember);
         return "redirect:"+redirectURL;
     }
 

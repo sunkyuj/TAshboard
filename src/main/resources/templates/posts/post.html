@@ -15,6 +15,9 @@
 </head>
 <body>
 
+<!-- 네비게이션 바 -->
+<nav th:replace="~{layout/navbar :: navbarFragment}"></nav>
+
 <div class="container">
 
     <div class="py-5 text-center">
@@ -33,6 +36,10 @@
         <input type="text" id="title" name="title" class="form-control" th:value="${post.title}" readonly>
     </div>
     <div>
+        <label for="boardType" th:text="#{label.board.type}">게시판 종류</label>
+        <input type="text" id="boardType" name="boardType" class="form-control" th:value="${post.boardType.getBoardName()}" readonly>
+    </div>
+    <div>
         <label for="writer" th:text="#{label.post.writer}">작성자</label>
         <input type="text" id="writer" name="writer" class="form-control" th:value="${post.member.name}" readonly>
     </div>
@@ -49,13 +56,13 @@
             <button class="w-100 btn btn-primary btn-lg"
                     onclick="location.href='editForm.html'"
                     th:onclick="|location.href='@{/posts/{board}/{postId}/edit(board=${boardPath},postId=${post.postId})}'|"
-                    type="button" th:text="#{page.updateItem}">상품 수정</button>
+                    type="button" th:text="#{page.updatePost}">상품 수정</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='posts.html'"
                     th:onclick="|location.href='@{/posts/{board}(board=${boardPath})}'|"
-                    type="button" th:text="#{button.cancel}">목록으로</button>
+                    type="button" th:text="#{button.toList}">목록으로</button>
         </div>
     </div>
 
