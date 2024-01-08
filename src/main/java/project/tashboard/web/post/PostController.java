@@ -10,13 +10,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.tashboard.api.post.PostRequest;
-import project.tashboard.api.post.PostResponse;
 import project.tashboard.domain.board.Board;
 import project.tashboard.domain.board.BoardType;
 import project.tashboard.domain.member.Member;
 import project.tashboard.domain.post.Post;
 import project.tashboard.domain.post.form.PostAddForm;
+import project.tashboard.domain.post.form.PostUpdateForm;
 import project.tashboard.web.member.MemberService;
 import project.tashboard.web.member.SessionConst;
 
@@ -76,8 +75,7 @@ public class PostController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            model.addAttribute("boardList", boardList);
-            model.addAttribute("boardPath", boardPath);
+            model.addAttribute("board", getBoard(boardPath));
             return "posts/addForm";
         }
 
@@ -103,6 +101,44 @@ public class PostController {
         model.addAttribute("post", post);
         model.addAttribute("boardPath", boardPath);
         return "posts/post";
+    }
+
+    @GetMapping("/{postId}/edit")
+    public String editForm(@PathVariable String boardPath, @PathVariable Long postId, Model model) {
+        Post post = postService.findPost(postId).orElseThrow();
+        PostUpdateForm form = new PostUpdateForm(post);
+        model.addAttribute("post", form);
+        model.addAttribute("board", getBoard(boardPath));
+        return "posts/editForm";
+    }
+
+    @PostMapping("/{postId}/edit")
+    public String editPost(@PathVariable String boardPath,
+                           @PathVariable Long postId,
+                           @Validated @ModelAttribute("post") PostUpdateForm form,
+                           BindingResult bindingResult,
+                           Model model,
+                           RedirectAttributes redirectAttributes) {
+
+        Member member = memberService.findByName(form.getWriterName());
+        if(member == null) {
+            bindingResult.reject("memberNotFound", "작성자가 존재하지 않습니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            model.addAttribute("board", getBoard(boardPath));
+            return "posts/editForm";
+        }
+
+        //성공 로직
+        postService.updatePostWithForm(form);
+
+
+        redirectAttributes.addAttribute("boardPath", boardPath);
+        redirectAttributes.addAttribute("postId", postId);
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/posts/{boardPath}/{postId}";
     }
 
     private static BoardType getBoardType(String boardPath) {

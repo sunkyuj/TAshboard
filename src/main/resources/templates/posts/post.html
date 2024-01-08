@@ -53,7 +53,7 @@
 
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
+            <button class="w-100 btn btn-primary btn-lg" th:if="${session.loginMember.memberId == post.member.memberId}"
                     onclick="location.href='editForm.html'"
                     th:onclick="|location.href='@{/posts/{board}/{postId}/edit(board=${boardPath},postId=${post.postId})}'|"
                     type="button" th:text="#{page.updatePost}">상품 수정</button>
