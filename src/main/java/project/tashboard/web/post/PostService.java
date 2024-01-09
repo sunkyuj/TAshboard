@@ -43,4 +43,8 @@ public class PostService {
 
         postRepository.save(findPost); // anti-pattern, but it's okay for now. TODO?
     }
+
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
 }

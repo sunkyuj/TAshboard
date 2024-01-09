@@ -83,7 +83,7 @@
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/posts/{boardPath}(boardPath=${boardPath})}'|"
+                        th:onclick="|location.href='@{/posts/{boardPath}/{postId}(boardPath=${boardPath},postId=*{postId})}'|"
                         type="button" th:text="#{button.cancel}">취소</button>
             </div>
         </div>

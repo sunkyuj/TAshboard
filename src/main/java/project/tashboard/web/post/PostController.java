@@ -141,6 +141,18 @@ public class PostController {
         return "redirect:/posts/{boardPath}/{postId}";
     }
 
+
+    @DeleteMapping("/{postId}")
+    public String deletePost(@PathVariable String boardPath,
+                             @PathVariable Long postId,
+                             RedirectAttributes redirectAttributes) {
+        postService.deletePost(postId);
+        redirectAttributes.addAttribute("boardPath", boardPath);
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/posts/{boardPath}";
+    }
+
+
     private static BoardType getBoardType(String boardPath) {
         return BoardType.valueOf(boardPath.toUpperCase());
     }

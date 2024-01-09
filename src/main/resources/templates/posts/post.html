@@ -51,13 +51,25 @@
 
     <hr class="my-4">
 
-    <div class="row">
+    <div class="row py-1">
         <div class="col">
-            <button class="w-100 btn btn-primary btn-lg" th:if="${session.loginMember.memberId == post.member.memberId}"
+            <button class="w-100 btn btn-primary btn-lg" th:if="${session.loginMember!=null && session.loginMember.memberId == post.member.memberId}"
                     onclick="location.href='editForm.html'"
                     th:onclick="|location.href='@{/posts/{board}/{postId}/edit(board=${boardPath},postId=${post.postId})}'|"
                     type="button" th:text="#{page.updatePost}">상품 수정</button>
         </div>
+        <div class="col">
+            <form action="#" th:action method="#" th:method="delete">
+            <button class="w-100 btn btn-danger btn-lg" th:if="${session.loginMember!=null && session.loginMember.memberId == post.member.memberId}"
+                    onclick="location.href='editForm.html'"
+                    type="submit" formmethod="POST"
+                    th:onclick="|location.href='@{/posts/{board}/{postId}/delete(board=${boardPath},postId=${post.postId})}'|"
+                    th:text="#{page.deletePost}">상품 삭제</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row py-1">
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='posts.html'"
