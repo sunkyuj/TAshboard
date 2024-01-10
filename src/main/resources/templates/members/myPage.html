@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<nav th:replace="~{layout/navbar :: navbarFragment}"></nav>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.post}">게시글 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+        <label for="loginId" th:text="#{label.member.loginId}">ID</label>
+        <input type="text" id="loginId" name="loginId" class="form-control" value="1" th:value="${member.loginId}" readonly>
+    </div>
+    <div>
+        <label for="name" th:text="#{label.member.name}">이름</label>
+        <input type="text" id="name" name="name" class="form-control" th:value="${member.name}">
+    </div>
+    <div>
+        <label for="createdAt" th:text="#{label.member.createdAt}">생성일</label>
+        <input type="text" id="createdAt" name="createdAt" class="form-control" th:value="${member.createdAt}" readonly>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row py-1">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/mypage/edit}'|"
+                    type="button" th:text="#{page.updateMember}">회원 수정</button>
+        </div>
+        <div class="col">
+            <form action="#" th:action method="#" th:method="delete">
+                <button class="w-100 btn btn-danger btn-lg"
+                        onclick="location.href='editForm.html'"
+                        type="submit" formmethod="POST"
+                        th:onclick="|location.href='@{/members/{memberId}(memberId=*{memberId})}'|"
+                        th:text="#{page.deleteMember}">회원 탈퇴</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row py-1">
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='posts.html'"
+                    th:onclick="|location.href='@{/}'|"
+                    type="button" th:text="#{page.toHome}">홈으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>

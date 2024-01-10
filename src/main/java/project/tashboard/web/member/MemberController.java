@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +79,30 @@ public class MemberController {
             session.invalidate(); // 세션 만료
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/mypage")
+    public String myPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false); // 세션을 조회해서 있으면 반환, 없으면 null 반환
+        if (session == null) {
+            return "redirect:/login";
+        }
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        model.addAttribute("member", loginMember);
+        return "members/myPage";
+    }
+
+    @GetMapping("/mypage/edit")
+    public String editForm(@ModelAttribute("member") MemberRegisterForm form, HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // 세션을 조회해서 있으면 반환, 없으면 null 반환
+        if (session == null) {
+            return "redirect:/login";
+        }
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        form.setLoginId(loginMember.getLoginId());
+        form.setName(loginMember.getName());
+        form.setPassword(loginMember.getPassword());
+        return "members/editForm";
     }
 
 }
