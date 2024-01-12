@@ -12,12 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.tashboard.api.member.LoginRequest;
 import project.tashboard.api.member.MemberResponse;
 import project.tashboard.api.member.RegisterRequest;
 import project.tashboard.domain.member.Member;
 import project.tashboard.domain.member.form.MemberLoginForm;
 import project.tashboard.domain.member.form.MemberRegisterForm;
+import project.tashboard.domain.member.form.MemberUpdateForm;
+import project.tashboard.domain.post.form.PostUpdateForm;
 
 import java.io.IOException;
 import java.util.List;
@@ -103,6 +106,31 @@ public class MemberController {
         form.setName(loginMember.getName());
         form.setPassword(loginMember.getPassword());
         return "members/editForm";
+    }
+
+    @PostMapping("/mypage/edit")
+    public String editMyInfo(@Validated @ModelAttribute("member") MemberUpdateForm form,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpServletRequest request,
+                             RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession(false); // 세션을 조회해서 있으면 반환, 없으면 null 반환
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if(member == null) {
+            bindingResult.reject("memberNotFound", "작성자가 존재하지 않습니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "posts/editForm";
+        }
+
+        //성공 로직
+        Member updatedMember = memberService.updatePostWithForm(form);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, updatedMember); // session update
+
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/mypage";
     }
 
 }

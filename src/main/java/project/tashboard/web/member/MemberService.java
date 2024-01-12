@@ -1,10 +1,13 @@
 package project.tashboard.web.member;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.tashboard.domain.member.Member;
+import project.tashboard.domain.member.form.MemberUpdateForm;
+import project.tashboard.domain.post.Post;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,5 +38,17 @@ public class MemberService {
 
     public Member findByName(String name) {
         return memberRepository.findByName(name);
+    }
+
+    public Member updatePostWithForm(MemberUpdateForm form) {
+
+        Member findMember = memberRepository.findByLoginId(form.getLoginId());
+        // update post
+        findMember.setName(form.getName());
+        findMember.setPassword(form.getPassword());
+
+        log.info("findMember: {}", findMember);
+        memberRepository.save(findMember); // anti-pattern, but it's okay for now. TODO?
+        return findMember;
     }
 }
